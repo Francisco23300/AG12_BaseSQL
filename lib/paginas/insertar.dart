@@ -66,7 +66,7 @@ class _PaginaInsertarState extends State<PaginaInsertar> {
   Future<void> insertar() async {
     if (!formKey.currentState!.validate()) return;
 
-    // 1️⃣ Validar que no exista el número de control
+    // Validar que no exista el número de control
     final existe = await GestorBaseDatos.instancia.existeNumeroControl(numeroControl.text);
 
     if (existe) {
@@ -76,7 +76,7 @@ class _PaginaInsertarState extends State<PaginaInsertar> {
       return;
     }
 
-    // 2️⃣ Crear objeto Alumno y convertir a MAYÚSCULAS
+    // Crear objeto Alumno y convertir a MAYÚSCULAS
     final nuevo = Alumno(
       nombre: nombre.text.toUpperCase(),
       apellidoPaterno: apellidoPaterno.text.toUpperCase(),
@@ -86,7 +86,7 @@ class _PaginaInsertarState extends State<PaginaInsertar> {
       numeroControl: numeroControl.text,
     );
 
-    // 3️⃣ Insertar en BD
+    // Insertar en BD
     await GestorBaseDatos.instancia.insertarAlumno(nuevo);
 
     ScaffoldMessenger.of(context).showSnackBar(

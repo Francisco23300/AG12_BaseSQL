@@ -33,7 +33,7 @@ class GestorBaseDatos {
     return _db!;
   }
 
-  // ⬅ MÉTODO QUE TE FALTABA
+  
   Future<bool> existeNumeroControl(String nc) async {
     final db = await _abrir();
 
