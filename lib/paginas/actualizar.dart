@@ -4,7 +4,8 @@ import '../modelos/alumno.dart';
 import '../utilidades/validadores.dart';
 
 class PaginaActualizar extends StatefulWidget {
-  const PaginaActualizar({super.key});
+  final Alumno? alumno;
+  const PaginaActualizar({super.key,this.alumno});
 
   @override
   State<PaginaActualizar> createState() => _PaginaActualizarState();
@@ -25,6 +26,9 @@ class _PaginaActualizarState extends State<PaginaActualizar> {
   @override
   void initState() {
     super.initState();
+    if (widget.alumno != null) {
+      cargarDatos(widget.alumno!);
+    }
     cargar();
   }
 
@@ -121,6 +125,7 @@ class _PaginaActualizarState extends State<PaginaActualizar> {
     );
 
     await GestorBaseDatos.instancia.actualizarAlumno(nuevo);
+    if (!mounted) return;
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Alumno actualizado")),

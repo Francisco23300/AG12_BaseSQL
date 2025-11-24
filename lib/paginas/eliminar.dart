@@ -25,6 +25,7 @@ class _PaginaEliminarState extends State<PaginaEliminar> {
 
   Future<void> eliminar(int id) async {
     await GestorBaseDatos.instancia.eliminarAlumno(id);
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Alumno eliminado")),
     );

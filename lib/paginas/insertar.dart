@@ -63,45 +63,39 @@ class _PaginaInsertarState extends State<PaginaInsertar> {
     );
   }
 
-  Future<void> insertar() async {
-    if (!formKey.currentState!.validate()) return;
+ Future<void> insertar() async {
+  if (!formKey.currentState!.validate()) return;
 
-    // Validar que no exista el número de control
-    final existe = await GestorBaseDatos.instancia.existeNumeroControl(numeroControl.text);
+  // Validar número de control
+  final existe = await GestorBaseDatos.instancia.existeNumeroControl(numeroControl.text);
 
-    if (existe) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("❌ El número de control ya existe")),
-      );
-      return;
-    }
-
-    // Crear objeto Alumno y convertir a MAYÚSCULAS
-    final nuevo = Alumno(
-      nombre: nombre.text.toUpperCase(),
-      apellidoPaterno: apellidoPaterno.text.toUpperCase(),
-      apellidoMaterno: apellidoMaterno.text.toUpperCase(),
-      telefono: telefono.text,
-      correo: correo.text.toLowerCase(),
-      numeroControl: numeroControl.text,
-    );
-
-    // Insertar en BD
-    await GestorBaseDatos.instancia.insertarAlumno(nuevo);
-
+  if (existe) {
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Alumno insertado correctamente ✔")),
+      const SnackBar(content: Text(" El número de control ya existe")),
     );
-
-    limpiarCampos();
+    return;
   }
 
-  void limpiarCampos() {
-    nombre.clear();
-    apellidoPaterno.clear();
-    apellidoMaterno.clear();
-    telefono.clear();
-    correo.clear();
-    numeroControl.clear();
-  }
+  final nuevo = Alumno(
+    nombre: nombre.text.toUpperCase(),
+    apellidoPaterno: apellidoPaterno.text.toUpperCase(),
+    apellidoMaterno: apellidoMaterno.text.toUpperCase(),
+    telefono: telefono.text,
+    correo: correo.text.toLowerCase(),
+    numeroControl: numeroControl.text,
+  );
+
+  await GestorBaseDatos.instancia.insertarAlumno(nuevo);
+
+  if (!mounted) return;
+
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(content: Text("Alumno insertado correctamente ✔")),
+  );
+
+  await Future.delayed(const Duration(milliseconds: 500));
+ if (!mounted) return;
+  Navigator.pop(context);
+}
 }
